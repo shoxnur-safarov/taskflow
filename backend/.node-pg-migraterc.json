@@ -1,0 +1,5 @@
+{
+  "envPath": ".env",
+  "migrationsTable": "pgmigrations",
+  "dir": "migrations"
+}
