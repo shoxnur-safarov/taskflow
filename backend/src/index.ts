@@ -10,6 +10,7 @@ import workspaceRoutes from "./routes/workspace.routes.js";
 import workspaceMemberRoutes from "./routes/workspace-member.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import taskRoutes from "./routes/task.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/workspaces/:workspaceId", workspaceMemberRoutes);
 app.use("/api/workspaces/:workspaceId/projects", projectRoutes);
 app.use("/api/workspaces/:workspaceId/projects/:projectId/tasks", taskRoutes);
+app.use("/api/workspaces/:workspaceId/projects/:projectId/tasks/:taskId/comments", commentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
