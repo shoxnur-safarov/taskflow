@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { registerSchema, loginSchema } from "../validators/auth.validator.js";
-import { findUserByEmail, createUser } from "../models/user.model.js";
+import { findUserByEmail, createUser, findUserById } from "../models/user.model.js";
 import { generateToken } from "../utils/jwt.js";
 
 export const register = async (req: Request, res: Response) => {
@@ -77,4 +77,16 @@ export const login = async (req: Request, res: Response) => {
     console.error("Login xatosi:", error);
     res.status(500).json({ error: "Server xatosi" });
   }
+};
+  export const getMe = async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const user = await findUserById(userId);
+  
+  if (!user) {
+    return res.status(404).json({ error: "Foydalanuvchi topilmadi" });
+  }
+
+  res.json({
+    user: { id: user.id, fullName: user.full_name, email: user.email },
+  });
 };
