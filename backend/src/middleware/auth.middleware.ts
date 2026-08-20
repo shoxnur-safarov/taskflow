@@ -5,6 +5,11 @@ export interface AuthRequest extends Request {
   userId?: number;
   userEmail?: string;
 }
+export interface AuthRequest extends Request {
+  userId?: number;
+  userEmail?: string;
+  userRole?: string;
+}
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
