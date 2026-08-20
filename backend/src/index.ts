@@ -12,6 +12,7 @@ import projectRoutes from "./routes/project.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
 import labelRoutes from "./routes/label.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use("/api/workspaces/:workspaceId/projects", projectRoutes);
 app.use("/api/workspaces/:workspaceId/projects/:projectId/tasks", taskRoutes);
 app.use("/api/workspaces/:workspaceId/projects/:projectId/tasks/:taskId/comments", commentRoutes);
 app.use("/api/workspaces/:workspaceId/labels", labelRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
