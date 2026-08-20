@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import  pool  from "./config/postgres.js";
+import pool from "./config/postgres.js";
+import { generalLimiter } from "./middleware/rateLimiter.js";
+import authRoutes from "./routes/auth.routes.js";
 
 dotenv.config();
 
@@ -11,27 +13,21 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
-app.use(limiter);
+app.use(cookieParser());
+app.use(generalLimiter);
 
 app.get("/", (req, res) => {
   res.json({ message: "TaskFlow API is running" });
 });
 
-app.get("/db-test", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    res.json({ success: true, time: result.rows[0] });
-  } catch (error) {
-    res.status(500).json({ success: false, error: String(error) });
-  }
-});
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
