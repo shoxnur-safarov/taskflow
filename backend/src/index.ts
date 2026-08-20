@@ -8,6 +8,7 @@ import { generalLimiter } from "./middleware/rateLimiter.js";
 import authRoutes from "./routes/auth.routes.js";
 import workspaceRoutes from "./routes/workspace.routes.js";
 import workspaceMemberRoutes from "./routes/workspace-member.routes.js";
+import projectRoutes from "./routes/project.routes.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/workspaces/:workspaceId", workspaceMemberRoutes);
+app.use("/api/workspaces/:workspaceId/projects", projectRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
