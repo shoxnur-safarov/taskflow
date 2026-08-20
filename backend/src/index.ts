@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import pool from "./config/postgres.js";
 import { generalLimiter } from "./middleware/rateLimiter.js";
 import authRoutes from "./routes/auth.routes.js";
+import workspaceRoutes from "./routes/workspace.routes.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/workspaces", workspaceRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
