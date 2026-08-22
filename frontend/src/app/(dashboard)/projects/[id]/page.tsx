@@ -5,18 +5,20 @@ import { Plus, Users, Settings } from "lucide-react";
 import KanbanColumn from "@/components/kanban/KanbanColumn";
 import { mockKanbanTasks, mockProjects } from "@/lib/mockData";
 import { Task, TaskStatus } from "@/types";
+import TaskDetailPanel from "@/components/task-detail/TaskDetailPanel";
 
 const statuses: TaskStatus[] = ["todo", "in_progress", "review", "done"];
 
 export default function ProjectDetailPage() {
   const [tasks] = useState<Task[]>(mockKanbanTasks);
   const [activeTab, setActiveTab] = useState<"board" | "list" | "calendar" | "activity">("board");
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [mobileStatus, setMobileStatus] = useState<TaskStatus>("todo");
   const project = mockProjects[0];
 
-  const handleTaskClick = (task: Task) => {
-    console.log("Task ochildi:", task.title);
-    // Task Detail panel keyingi qadamda qo'shiladi
-  };
+ const handleTaskClick = (task: Task) => {
+  setSelectedTask(task);
+};
 
   return (
     <div className="max-w-full">
@@ -64,26 +66,59 @@ export default function ProjectDetailPage() {
 
       {/* Kanban Board */}
       {activeTab === "board" && (
-        <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
-          {statuses.map((status) => (
-            <KanbanColumn
-              key={status}
-              status={status}
-              tasks={tasks.filter((t) => t.status === status)}
-              onTaskClick={handleTaskClick}
-              onAddTask={() => console.log("Add task to", status)}
-            />
-          ))}
-        </div>
-      )}
+  <>
+    {/* Mobil - status tab'lari */}
+    <div className="sm:hidden flex items-center gap-1 mb-4 bg-muted-bg rounded-lg p-1 overflow-x-auto">
+      {statuses.map((status) => {
+        const config = {
+          todo: { label: "To Do", dot: "bg-status-todo" },
+          in_progress: { label: "In Progress", dot: "bg-status-progress" },
+          review: { label: "Review", dot: "bg-status-review" },
+          done: { label: "Done", dot: "bg-status-done" },
+        }[status];
+        const count = tasks.filter((t) => t.status === status).length;
+        return (
+          <button
+            key={status}
+            onClick={() => setMobileStatus(status)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+              mobileStatus === status ? "bg-card shadow-sm text-foreground" : "text-muted"
+            }`}
+          >
+            <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+            {config.label}
+            <span className="text-[10px] text-muted">{count}</span>
+          </button>
+        );
+      })}
+    </div>
 
-      {activeTab !== "board" && (
-        <div className="text-center py-16 text-muted">
-          {activeTab === "list" && "List View — keyingi qadamda qo'shiladi"}
-          {activeTab === "calendar" && "Calendar View — keyingi qadamda qo'shiladi"}
-          {activeTab === "activity" && "Activity Feed — keyingi qadamda qo'shiladi"}
-        </div>
-      )}
+    {/* Mobil - bitta ustun */}
+    <div className="sm:hidden">
+      <KanbanColumn
+        status={mobileStatus}
+        tasks={tasks.filter((t) => t.status === mobileStatus)}
+        onTaskClick={handleTaskClick}
+        onAddTask={() => console.log("Add task to", mobileStatus)}
+        hideHeader
+      />
+    </div>
+
+    {/* Desktop/Tablet - hammasi yonma-yon */}
+    <div className="hidden sm:flex gap-4 overflow-x-auto pb-4">
+      {statuses.map((status) => (
+        <KanbanColumn
+          key={status}
+          status={status}
+          tasks={tasks.filter((t) => t.status === status)}
+          onTaskClick={handleTaskClick}
+          onAddTask={() => console.log("Add task to", status)}
+        />
+      ))}
+    </div>
+  </>
+)}
+      <TaskDetailPanel task={selectedTask} onClose={() => setSelectedTask(null)} />
     </div>
   );
 }
