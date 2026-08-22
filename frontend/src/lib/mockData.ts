@@ -1,0 +1,81 @@
+import { Task, Project } from "@/types";
+
+export const mockTasks: Task[] = [
+  {
+    id: 1,
+    projectId: 1,
+    title: "Design system tokens",
+    description: null,
+    status: "in_progress",
+    priority: "high",
+    assigneeId: 1,
+    assigneeName: "Alisher",
+    assigneeAvatar: null,
+    dueDate: "2026-08-24",
+    createdBy: 1,
+    createdAt: "2026-08-20",
+    updatedAt: "2026-08-20",
+  },
+  {
+    id: 2,
+    projectId: 1,
+    title: "Fix authentication bug on Safari",
+    description: null,
+    status: "todo",
+    priority: "high",
+    assigneeId: 1,
+    assigneeName: "Alisher",
+    assigneeAvatar: null,
+    dueDate: "2026-08-26",
+    createdBy: 1,
+    createdAt: "2026-08-20",
+    updatedAt: "2026-08-20",
+  },
+  {
+    id: 3,
+    projectId: 2,
+    title: "API documentation for v2",
+    description: null,
+    status: "review",
+    priority: "medium",
+    assigneeId: 1,
+    assigneeName: "Alisher",
+    assigneeAvatar: null,
+    dueDate: "2026-08-28",
+    createdBy: 1,
+    createdAt: "2026-08-20",
+    updatedAt: "2026-08-20",
+  },
+];
+
+export const mockProjects: Project[] = [
+  {
+    id: 1,
+    workspaceId: 1,
+    name: "Website Redesign",
+    description: "Yangi marketing sayti",
+    status: "active",
+    taskCount: 12,
+    completedCount: 5,
+    createdAt: "2026-08-15",
+    updatedAt: "2026-08-20",
+  },
+  {
+    id: 2,
+    workspaceId: 1,
+    name: "Mobile App v2",
+    description: "iOS va Android yangilanishi",
+    status: "active",
+    taskCount: 22,
+    completedCount: 18,
+    createdAt: "2026-08-10",
+    updatedAt: "2026-08-19",
+  },
+];
+
+export const mockStats = {
+  totalProjects: 4,
+  totalTasks: 34,
+  completedTasks: 18,
+  overdueTasks: 3,
+};
