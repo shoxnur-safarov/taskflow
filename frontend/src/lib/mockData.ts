@@ -1,4 +1,5 @@
 import { Task, Project } from "@/types";
+import { Label } from "@/types";
 
 export const mockTasks: Task[] = [
   {
@@ -79,3 +80,63 @@ export const mockStats = {
   completedTasks: 18,
   overdueTasks: 3,
 };
+
+export const mockLabels: Label[] = [
+  { id: 1, workspaceId: 1, name: "Frontend", color: "#3b82f6" },
+  { id: 2, workspaceId: 1, name: "Bug", color: "#ef4444" },
+  { id: 3, workspaceId: 1, name: "Design", color: "#a855f7" },
+];
+
+export const mockKanbanTasks: Task[] = [
+  { ...mockTasks[0], status: "todo", labels: [mockLabels[2]] },
+  { ...mockTasks[1], status: "todo", labels: [mockLabels[1]] },
+  { ...mockTasks[2], status: "in_progress", labels: [mockLabels[0]] },
+  {
+    id: 4,
+    projectId: 1,
+    title: "Update homepage hero section",
+    description: null,
+    status: "in_progress",
+    priority: "medium",
+    assigneeId: 1,
+    assigneeName: "Alisher",
+    assigneeAvatar: null,
+    dueDate: "2026-08-25",
+    createdBy: 1,
+    createdAt: "2026-08-20",
+    updatedAt: "2026-08-20",
+    labels: [mockLabels[0], mockLabels[2]],
+  },
+  {
+    id: 5,
+    projectId: 1,
+    title: "Review pull request #42",
+    description: null,
+    status: "review",
+    priority: "low",
+    assigneeId: 1,
+    assigneeName: "Alisher",
+    assigneeAvatar: null,
+    dueDate: null,
+    createdBy: 1,
+    createdAt: "2026-08-19",
+    updatedAt: "2026-08-20",
+    labels: [],
+  },
+  {
+    id: 6,
+    projectId: 1,
+    title: "Set up CI/CD pipeline",
+    description: null,
+    status: "done",
+    priority: "medium",
+    assigneeId: 1,
+    assigneeName: "Alisher",
+    assigneeAvatar: null,
+    dueDate: null,
+    createdBy: 1,
+    createdAt: "2026-08-15",
+    updatedAt: "2026-08-18",
+    labels: [mockLabels[0]],
+  },
+];
