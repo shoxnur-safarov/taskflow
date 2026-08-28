@@ -7,6 +7,7 @@ import { mockKanbanTasks, mockProjects } from "@/lib/mockData";
 import { Task, TaskStatus } from "@/types";
 import TaskDetailPanel from "@/components/task-detail/TaskDetailPanel";
 import TaskListRow from "@/components/task-detail/TaskListRow";
+import CalendarGrid from "@/components/calendar/CalendarGrid";
 
 const statuses: TaskStatus[] = ["todo", "in_progress", "review", "done"];
 
@@ -50,11 +51,10 @@ export default function ProjectDetailPage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === tab
+              className={`px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab
                   ? "border-primary text-primary"
                   : "border-transparent text-muted hover:text-foreground"
-              }`}
+                }`}
             >
               {tab === "board" && "Board"}
               {tab === "list" && "List"}
@@ -82,9 +82,8 @@ export default function ProjectDetailPage() {
                 <button
                   key={status}
                   onClick={() => setMobileStatus(status)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
-                    mobileStatus === status ? "bg-card shadow-sm text-foreground" : "text-muted"
-                  }`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${mobileStatus === status ? "bg-card shadow-sm text-foreground" : "text-muted"
+                    }`}
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
                   {config.label}
@@ -138,9 +137,7 @@ export default function ProjectDetailPage() {
 
       {/* Calendar View - placeholder */}
       {activeTab === "calendar" && (
-        <div className="text-center py-16 text-muted">
-          {"Calendar View — keyingi qadamda qo'shiladi"}
-        </div>
+        <CalendarGrid tasks={tasks} onTaskClick={handleTaskClick} />
       )}
 
       {/* Activity View - placeholder */}
