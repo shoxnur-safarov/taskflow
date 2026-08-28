@@ -1,6 +1,7 @@
 import { Task, Project } from "@/types";
 import { Label } from "@/types";
 import { WorkspaceMember } from "@/types";
+import { Notification } from "@/types";
 
 export const mockTasks: Task[] = [
   {
@@ -172,4 +173,39 @@ export const mockMembers: WorkspaceMember[] = [
 export const mockPendingInvites = [
   { id: 1, email: "jamshid@example.com", role: "member", status: "pending" },
   { id: 2, email: "nodira@example.com", role: "admin", status: "pending" },
+];
+
+export const mockNotifications: Notification[] = [
+  {
+    id: 1,
+    userId: 1,
+    type: "task_assigned",
+    message: "Sardor sizga \"Fix authentication bug\" vazifasini biriktirdi",
+    isRead: false,
+    createdAt: "10 daqiqa oldin",
+  },
+  {
+    id: 2,
+    userId: 1,
+    type: "comment_added",
+    message: "Malika \"Design system tokens\" vazifasiga izoh qoldirdi",
+    isRead: false,
+    createdAt: "2 soat oldin",
+  },
+  {
+    id: 3,
+    userId: 1,
+    type: "due_soon",
+    message: "\"API documentation\" vazifasining muddati ertaga tugaydi",
+    isRead: true,
+    createdAt: "Kecha",
+  },
+  {
+    id: 4,
+    userId: 1,
+    type: "project_updated",
+    message: "\"Website Redesign\" loyihasi statusi yangilandi",
+    isRead: true,
+    createdAt: "2 kun oldin",
+  },
 ];
