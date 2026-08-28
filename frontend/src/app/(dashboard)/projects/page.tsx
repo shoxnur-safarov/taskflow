@@ -5,10 +5,12 @@ import { Search, Plus, LayoutGrid, List } from "lucide-react";
 import ProjectCard from "@/components/dashboard/ProjectCard";
 import Button from "@/components/ui/Button";
 import { mockProjects } from "@/lib/mockData";
+import CreateProjectModal from "@/components/projects/CreateProjectModal";
 
 export default function ProjectsPage() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [search, setSearch] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const filteredProjects = mockProjects.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
@@ -18,7 +20,7 @@ export default function ProjectsPage() {
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <h1 className="text-2xl font-bold text-foreground">Loyihalar</h1>
-        <Button className="w-full sm:w-auto">
+        <Button onClick={() => setIsCreateOpen(true)} className="w-full sm:w-auto">
           <Plus size={16} className="mr-1.5" />
           Yangi loyiha
         </Button>
@@ -74,6 +76,7 @@ export default function ProjectsPage() {
           ))}
         </div>
       )}
+      <CreateProjectModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
     </div>
   );
 }

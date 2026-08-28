@@ -10,6 +10,7 @@ import TaskListRow from "@/components/task-detail/TaskListRow";
 import CalendarGrid from "@/components/calendar/CalendarGrid";
 import ActivityFeed from "@/components/activity/ActivityFeed";
 
+
 const statuses: TaskStatus[] = ["todo", "in_progress", "review", "done"];
 
 export default function ProjectDetailPage() {
