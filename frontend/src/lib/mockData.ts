@@ -1,5 +1,6 @@
 import { Task, Project } from "@/types";
 import { Label } from "@/types";
+import { WorkspaceMember } from "@/types";
 
 export const mockTasks: Task[] = [
   {
@@ -139,4 +140,36 @@ export const mockKanbanTasks: Task[] = [
     updatedAt: "2026-08-18",
     labels: [mockLabels[0]],
   },
+];
+
+export const mockMembers: WorkspaceMember[] = [
+  {
+    id: 1,
+    fullName: "Alisher Navoiy",
+    email: "alisher@example.com",
+    avatarUrl: null,
+    role: "owner",
+    joinedAt: "2026-08-15",
+  },
+  {
+    id: 2,
+    fullName: "Sardor Yusupov",
+    email: "sardor@example.com",
+    avatarUrl: null,
+    role: "admin",
+    joinedAt: "2026-08-16",
+  },
+  {
+    id: 3,
+    fullName: "Malika Karimova",
+    email: "malika@example.com",
+    avatarUrl: null,
+    role: "member",
+    joinedAt: "2026-08-18",
+  },
+];
+
+export const mockPendingInvites = [
+  { id: 1, email: "jamshid@example.com", role: "member", status: "pending" },
+  { id: 2, email: "nodira@example.com", role: "admin", status: "pending" },
 ];
