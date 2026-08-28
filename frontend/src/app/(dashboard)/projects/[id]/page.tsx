@@ -6,6 +6,7 @@ import KanbanColumn from "@/components/kanban/KanbanColumn";
 import { mockKanbanTasks, mockProjects } from "@/lib/mockData";
 import { Task, TaskStatus } from "@/types";
 import TaskDetailPanel from "@/components/task-detail/TaskDetailPanel";
+import TaskListRow from "@/components/task-detail/TaskListRow";
 
 const statuses: TaskStatus[] = ["todo", "in_progress", "review", "done"];
 
@@ -16,9 +17,9 @@ export default function ProjectDetailPage() {
   const [mobileStatus, setMobileStatus] = useState<TaskStatus>("todo");
   const project = mockProjects[0];
 
- const handleTaskClick = (task: Task) => {
-  setSelectedTask(task);
-};
+  const handleTaskClick = (task: Task) => {
+    setSelectedTask(task);
+  };
 
   return (
     <div className="max-w-full">
@@ -66,58 +67,89 @@ export default function ProjectDetailPage() {
 
       {/* Kanban Board */}
       {activeTab === "board" && (
-  <>
-    {/* Mobil - status tab'lari */}
-    <div className="sm:hidden flex items-center gap-1 mb-4 bg-muted-bg rounded-lg p-1 overflow-x-auto">
-      {statuses.map((status) => {
-        const config = {
-          todo: { label: "To Do", dot: "bg-status-todo" },
-          in_progress: { label: "In Progress", dot: "bg-status-progress" },
-          review: { label: "Review", dot: "bg-status-review" },
-          done: { label: "Done", dot: "bg-status-done" },
-        }[status];
-        const count = tasks.filter((t) => t.status === status).length;
-        return (
-          <button
-            key={status}
-            onClick={() => setMobileStatus(status)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
-              mobileStatus === status ? "bg-card shadow-sm text-foreground" : "text-muted"
-            }`}
-          >
-            <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
-            {config.label}
-            <span className="text-[10px] text-muted">{count}</span>
-          </button>
-        );
-      })}
-    </div>
+        <>
+          {/* Mobil - status tab'lari */}
+          <div className="sm:hidden flex items-center gap-1 mb-4 bg-muted-bg rounded-lg p-1 overflow-x-auto">
+            {statuses.map((status) => {
+              const config = {
+                todo: { label: "To Do", dot: "bg-status-todo" },
+                in_progress: { label: "In Progress", dot: "bg-status-progress" },
+                review: { label: "Review", dot: "bg-status-review" },
+                done: { label: "Done", dot: "bg-status-done" },
+              }[status];
+              const count = tasks.filter((t) => t.status === status).length;
+              return (
+                <button
+                  key={status}
+                  onClick={() => setMobileStatus(status)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+                    mobileStatus === status ? "bg-card shadow-sm text-foreground" : "text-muted"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+                  {config.label}
+                  <span className="text-[10px] text-muted">{count}</span>
+                </button>
+              );
+            })}
+          </div>
 
-    {/* Mobil - bitta ustun */}
-    <div className="sm:hidden">
-      <KanbanColumn
-        status={mobileStatus}
-        tasks={tasks.filter((t) => t.status === mobileStatus)}
-        onTaskClick={handleTaskClick}
-        onAddTask={() => console.log("Add task to", mobileStatus)}
-        hideHeader
-      />
-    </div>
+          {/* Mobil - bitta ustun */}
+          <div className="sm:hidden">
+            <KanbanColumn
+              status={mobileStatus}
+              tasks={tasks.filter((t) => t.status === mobileStatus)}
+              onTaskClick={handleTaskClick}
+              onAddTask={() => console.log("Add task to", mobileStatus)}
+              hideHeader
+            />
+          </div>
 
-    {/* Desktop/Tablet - hammasi yonma-yon */}
-    <div className="hidden sm:flex gap-4 overflow-x-auto pb-4">
-      {statuses.map((status) => (
-        <KanbanColumn
-          key={status}
-          status={status}
-          tasks={tasks.filter((t) => t.status === status)}
-          onTaskClick={handleTaskClick}
-          onAddTask={() => console.log("Add task to", status)}
-        />
-      ))}
-    </div>
-  </>
-)}
+          {/* Desktop/Tablet - hammasi yonma-yon */}
+          <div className="hidden sm:flex gap-4 overflow-x-auto pb-4">
+            {statuses.map((status) => (
+              <KanbanColumn
+                key={status}
+                status={status}
+                tasks={tasks.filter((t) => t.status === status)}
+                onTaskClick={handleTaskClick}
+                onAddTask={() => console.log("Add task to", status)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* List View */}
+      {activeTab === "list" && (
+        <div className="bg-card border border-border rounded-xl overflow-hidden">
+          <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-3 px-4 py-2.5 bg-muted-bg text-xs font-medium text-muted uppercase tracking-wide">
+            <span>Task</span>
+            <span>Status</span>
+            <span>Priority</span>
+            <span>Assignee</span>
+            <span>Due Date</span>
+          </div>
+          {tasks.map((task) => (
+            <TaskListRow key={task.id} task={task} onClick={() => handleTaskClick(task)} />
+          ))}
+        </div>
+      )}
+
+      {/* Calendar View - placeholder */}
+      {activeTab === "calendar" && (
+        <div className="text-center py-16 text-muted">
+          {"Calendar View — keyingi qadamda qo'shiladi"}
+        </div>
+      )}
+
+      {/* Activity View - placeholder */}
+      {activeTab === "activity" && (
+        <div className="text-center py-16 text-muted">
+          {"Activity Feed — keyingi qadamda qo'shiladi"}
+        </div>
+      )}
+
       <TaskDetailPanel task={selectedTask} onClose={() => setSelectedTask(null)} />
     </div>
   );
