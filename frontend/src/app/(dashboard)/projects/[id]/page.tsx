@@ -8,6 +8,7 @@ import { Task, TaskStatus } from "@/types";
 import TaskDetailPanel from "@/components/task-detail/TaskDetailPanel";
 import TaskListRow from "@/components/task-detail/TaskListRow";
 import CalendarGrid from "@/components/calendar/CalendarGrid";
+import ActivityFeed from "@/components/activity/ActivityFeed";
 
 const statuses: TaskStatus[] = ["todo", "in_progress", "review", "done"];
 
@@ -52,8 +53,8 @@ export default function ProjectDetailPage() {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted hover:text-foreground"
+                ? "border-primary text-primary"
+                : "border-transparent text-muted hover:text-foreground"
                 }`}
             >
               {tab === "board" && "Board"}
@@ -141,11 +142,7 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Activity View - placeholder */}
-      {activeTab === "activity" && (
-        <div className="text-center py-16 text-muted">
-          {"Activity Feed — keyingi qadamda qo'shiladi"}
-        </div>
-      )}
+      {activeTab === "activity" && <ActivityFeed />}
 
       <TaskDetailPanel task={selectedTask} onClose={() => setSelectedTask(null)} />
     </div>
