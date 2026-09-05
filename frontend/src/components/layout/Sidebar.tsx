@@ -11,6 +11,8 @@ import {
   Settings,
   Users,
 } from "lucide-react";
+import WorkspaceSwitcher from "./WorkspaceSwitcher";
+import UserMenu from "./UserMenu";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -36,12 +38,7 @@ export default function Sidebar() {
       </div>
 
       <div className="px-3 py-3 border-b border-border">
-        <button className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-muted-bg transition-colors text-sm">
-          <span className="font-medium text-foreground truncate">Acme Corp</span>
-          <svg className="w-4 h-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-          </svg>
-        </button>
+        <WorkspaceSwitcher />
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
@@ -52,11 +49,10 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-primary-light text-primary"
-                  : "text-muted hover:bg-muted-bg hover:text-foreground"
-              }`}
+              className={`flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors ${isActive
+                ? "bg-primary-light text-primary"
+                : "text-muted hover:bg-muted-bg hover:text-foreground"
+                }`}
             >
               <Icon size={18} />
               {item.label}
@@ -73,15 +69,7 @@ export default function Sidebar() {
           <Settings size={18} />
           Settings
         </Link>
-        <div className="flex items-center gap-2.5 px-2.5 py-2 mt-1">
-          <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-medium">
-            A
-          </div>
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-foreground truncate">Alisher</p>
-            <p className="text-xs text-muted truncate">alisher@example.com</p>
-          </div>
-        </div>
+        <UserMenu />
       </div>
     </aside>
   );
