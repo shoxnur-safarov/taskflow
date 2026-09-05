@@ -3,12 +3,15 @@
 import { useState } from "react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
+import { mockLabels } from "@/lib/mockData";
+import { Trash2 } from "lucide-react";
 
-type SettingsTab = "profile" | "workspace" | "notifications" | "appearance" | "security";
+type SettingsTab = "profile" | "workspace" | "labels" | "notifications" | "appearance" | "security";
 
 const tabs: { key: SettingsTab; label: string }[] = [
   { key: "profile", label: "Profile" },
   { key: "workspace", label: "Workspace" },
+  { key: "labels", label: "Labels" },
   { key: "notifications", label: "Notifications" },
   { key: "appearance", label: "Appearance" },
   { key: "security", label: "Security" },
@@ -22,7 +25,6 @@ export default function SettingsPage() {
       <h1 className="text-2xl font-bold text-foreground mb-6">Sozlamalar</h1>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Tabs - chap tomonda desktop, tepada mobil */}
         <div className="flex md:flex-col gap-1 overflow-x-auto md:w-48 flex-shrink-0">
           {tabs.map((tab) => (
             <button
@@ -39,10 +41,10 @@ export default function SettingsPage() {
           ))}
         </div>
 
-        {/* Content */}
         <div className="flex-1 min-w-0">
           {activeTab === "profile" && <ProfileSettings />}
           {activeTab === "workspace" && <WorkspaceSettings />}
+          {activeTab === "labels" && <LabelsSettings />}
           {activeTab === "notifications" && <NotificationSettings />}
           {activeTab === "appearance" && <AppearanceSettings />}
           {activeTab === "security" && <SecuritySettings />}
@@ -102,6 +104,57 @@ function WorkspaceSettings() {
         <Button variant="outline" className="border-danger text-danger hover:bg-danger/5">
           {"Workspace'ni o'chirish"}
         </Button>
+      </div>
+    </div>
+  );
+}
+
+function LabelsSettings() {
+  const [labelName, setLabelName] = useState("");
+  const [selectedColor, setSelectedColor] = useState("#3b82f6");
+  const colorOptions = ["#3b82f6", "#ef4444", "#a855f7", "#10b981", "#f59e0b", "#ec4899"];
+
+  return (
+    <div className="bg-card border border-border rounded-xl p-5">
+      <h2 className="font-semibold text-foreground mb-4">Label boshqaruvi</h2>
+
+      <div className="flex flex-col sm:flex-row gap-2 mb-4">
+        <input
+          type="text"
+          placeholder="Yangi label nomi"
+          value={labelName}
+          onChange={(e) => setLabelName(e.target.value)}
+          className="flex-1 px-3.5 py-2.5 rounded-lg border border-border bg-card text-sm outline-none focus:ring-2 focus:ring-primary/20"
+        />
+        <div className="flex items-center gap-1.5">
+          {colorOptions.map((color) => (
+            <button
+              key={color}
+              onClick={() => setSelectedColor(color)}
+              className={`w-7 h-7 rounded-full flex-shrink-0 transition-transform ${
+                selectedColor === color ? "scale-110 ring-2 ring-offset-1 ring-border" : ""
+              }`}
+              style={{ backgroundColor: color }}
+            />
+          ))}
+        </div>
+        <Button disabled={!labelName.trim()}>{"Qo'shish"}</Button>
+      </div>
+
+      <div className="space-y-2">
+        {mockLabels.map((label) => (
+          <div key={label.id} className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-muted-bg transition-colors">
+            <span
+              className="text-xs font-medium px-2.5 py-1 rounded-full"
+              style={{ backgroundColor: `${label.color}20`, color: label.color }}
+            >
+              {label.name}
+            </span>
+            <button className="text-muted hover:text-danger p-1">
+              <Trash2 size={15} />
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
