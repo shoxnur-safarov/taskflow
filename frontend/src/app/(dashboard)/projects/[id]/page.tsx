@@ -9,6 +9,7 @@ import TaskDetailPanel from "@/components/task-detail/TaskDetailPanel";
 import TaskListRow from "@/components/task-detail/TaskListRow";
 import CalendarGrid from "@/components/calendar/CalendarGrid";
 import ActivityFeed from "@/components/activity/ActivityFeed";
+import TaskFormModal from "@/components/task-detail/TaskFormModal";
 
 
 const statuses: TaskStatus[] = ["todo", "in_progress", "review", "done"];
@@ -19,6 +20,7 @@ export default function ProjectDetailPage() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [mobileStatus, setMobileStatus] = useState<TaskStatus>("todo");
   const project = mockProjects[0];
+  const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
@@ -40,7 +42,10 @@ export default function ProjectDetailPage() {
             <button className="p-2 rounded-lg border border-border hover:bg-muted-bg transition-colors">
               <Settings size={16} className="text-muted" />
             </button>
-            <button className="flex items-center gap-1.5 bg-primary text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-primary-hover transition-colors">
+            <button
+              onClick={() => setIsTaskFormOpen(true)}
+              className="flex items-center gap-1.5 bg-primary text-white px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-primary-hover transition-colors"
+            >
               <Plus size={16} />
               <span className="hidden sm:inline">{"Vazifa qo'shish"}</span>
             </button>
@@ -146,6 +151,7 @@ export default function ProjectDetailPage() {
       {activeTab === "activity" && <ActivityFeed />}
 
       <TaskDetailPanel task={selectedTask} onClose={() => setSelectedTask(null)} />
+      <TaskFormModal isOpen={isTaskFormOpen} onClose={() => setIsTaskFormOpen(false)} />
     </div>
   );
 }
