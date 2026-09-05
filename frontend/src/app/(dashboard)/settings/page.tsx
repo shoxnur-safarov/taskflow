@@ -5,6 +5,7 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { mockLabels } from "@/lib/mockData";
 import { Trash2 } from "lucide-react";
+import { useTheme } from "@/lib/ThemeContext";
 
 type SettingsTab = "profile" | "workspace" | "labels" | "notifications" | "appearance" | "security";
 
@@ -30,11 +31,10 @@ export default function SettingsPage() {
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`px-3 py-2 rounded-lg text-sm font-medium text-left whitespace-nowrap transition-colors ${
-                activeTab === tab.key
+              className={`px-3 py-2 rounded-lg text-sm font-medium text-left whitespace-nowrap transition-colors ${activeTab === tab.key
                   ? "bg-primary-light text-primary"
                   : "text-muted hover:bg-muted-bg hover:text-foreground"
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -131,9 +131,8 @@ function LabelsSettings() {
             <button
               key={color}
               onClick={() => setSelectedColor(color)}
-              className={`w-7 h-7 rounded-full flex-shrink-0 transition-transform ${
-                selectedColor === color ? "scale-110 ring-2 ring-offset-1 ring-border" : ""
-              }`}
+              className={`w-7 h-7 rounded-full flex-shrink-0 transition-transform ${selectedColor === color ? "scale-110 ring-2 ring-offset-1 ring-border" : ""
+                }`}
               style={{ backgroundColor: color }}
             />
           ))}
@@ -192,7 +191,7 @@ function NotificationSettings() {
 }
 
 function AppearanceSettings() {
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("light");
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="bg-card border border-border rounded-xl p-5">
@@ -202,9 +201,8 @@ function AppearanceSettings() {
           <button
             key={t}
             onClick={() => setTheme(t)}
-            className={`p-3 rounded-lg border-2 text-sm font-medium capitalize transition-colors ${
-              theme === t ? "border-primary bg-primary-light text-primary" : "border-border text-muted"
-            }`}
+            className={`p-3 rounded-lg border-2 text-sm font-medium capitalize transition-colors ${theme === t ? "border-primary bg-primary-light text-primary" : "border-border text-muted"
+              }`}
           >
             {t === "light" && "Yorug'"}
             {t === "dark" && "Qorong'u"}
@@ -239,9 +237,8 @@ function ToggleRow({ label, checked, onChange }: { label: string; checked: boole
         className={`w-10 h-5.5 rounded-full transition-colors relative ${checked ? "bg-primary" : "bg-border"}`}
       >
         <span
-          className={`absolute top-0.5 w-4.5 h-4.5 rounded-full bg-white transition-transform ${
-            checked ? "translate-x-[19px]" : "translate-x-0.5"
-          }`}
+          className={`absolute top-0.5 w-4.5 h-4.5 rounded-full bg-white transition-transform ${checked ? "translate-x-[19px]" : "translate-x-0.5"
+            }`}
         />
       </button>
     </div>
