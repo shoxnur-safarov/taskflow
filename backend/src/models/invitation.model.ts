@@ -60,3 +60,29 @@ export const getWorkspaceMembers = async (workspaceId: number) => {
   );
   return result.rows;
 };
+export const acceptInvitationByToken = async (token: string, userId: number) => {
+  const invitation = await getInvitationByToken(token);
+
+  if (!invitation) {
+    throw new Error("Taklif topilmadi");
+  }
+
+  if (invitation.status !== "pending") {
+    throw new Error("Bu taklif allaqachon ishlatilgan");
+  }
+
+  if (new Date(invitation.expires_at) < new Date()) {
+    throw new Error("Taklif muddati tugagan");
+  }
+
+  await pool.query(
+    `INSERT INTO workspace_members (workspace_id, user_id, role) 
+     VALUES ($1, $2, $3)
+     ON CONFLICT DO NOTHING`,
+    [invitation.workspace_id, userId, invitation.role]
+  );
+
+  await updateInvitationStatus(invitation.id, "accepted");
+
+  return { ...invitation, status: "accepted" };
+};

@@ -6,6 +6,7 @@ import {
   getWorkspaceMembers,
 } from "../models/invitation.model.js";
 import type { AuthRequest } from "../middleware/auth.middleware.js";
+import { acceptInvitationByToken } from "../models/invitation.model.js";
 
 export const inviteMember = async (req: AuthRequest, res: Response) => {
   try {
@@ -44,5 +45,21 @@ export const getMembers = async (req: AuthRequest, res: Response) => {
     res.json({ members });
   } catch (error) {
     res.status(500).json({ error: "Server xatosi" });
+  }
+};
+export const acceptInvitation = async (req: AuthRequest, res: Response) => {
+  try {
+    const token = req.params.token as string;
+    const userId = req.userId!;
+
+    if (!token) {
+      return res.status(400).json({ error: "Token ko'rsatilmagan" });
+    }
+
+    const invitation = await acceptInvitationByToken(token, userId);
+
+    res.json({ message: "Workspace'ga muvaffaqiyatli qo'shildingiz", invitation });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message || "Server xatosi" });
   }
 };
