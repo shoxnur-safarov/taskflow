@@ -5,15 +5,36 @@ import Link from "next/link";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import AuthShowcase from "@/components/auth/AuthShowcase";
+import api from "@/lib/api";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function SignInPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000);
+    try {
+      await api.post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+      router.push("/dashboard");
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError("Xatolik yuz berdi");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -25,6 +46,11 @@ export default function SignInPage() {
             <p className="mt-2 text-2xl font-semibold text-foreground">Xush kelibsiz</p>
           </div>
 
+          {error && (
+            <div className="mb-4 px-3 py-2 rounded-lg bg-danger/10 text-danger text-sm">
+              {error}
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               id="email"

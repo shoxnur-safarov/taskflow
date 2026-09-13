@@ -5,6 +5,9 @@ import Link from "next/link";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import AuthShowcase from "@/components/auth/AuthShowcase";
+import api from "@/lib/api";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function SignUpPage() {
     const [formData, setFormData] = useState({
@@ -15,13 +18,36 @@ export default function SignUpPage() {
     });
     const [isLoading, setIsLoading] = useState(false);
 
+    const router = useRouter();
+    const [error, setError] = useState("");
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
-        // Backend'ga ulash keyingi bosqichda qo'shiladi
-        setTimeout(() => setIsLoading(false), 1000);
-    };
+        setError("");
 
+        if (formData.password !== formData.confirmPassword) {
+            setError("Parollar mos kelmadi");
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            await api.post("/auth/register", {
+                fullName: formData.fullName,
+                email: formData.email,
+                password: formData.password,
+            });
+            router.push("/onboarding");
+        } catch (err) {
+            if (axios.isAxiosError(err) && err.response?.data?.error) {
+                setError(err.response.data.error);
+            } else {
+                setError("Xatolik yuz berdi");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
     return (
         <div className="min-h-screen flex">
             {/* Chap taraf - Form */}
@@ -32,6 +58,11 @@ export default function SignUpPage() {
                         <p className="mt-2 text-2xl font-semibold text-foreground">Hisob yaratish</p>
                     </div>
 
+                    {error && (
+                        <div className="mb-4 px-3 py-2 rounded-lg bg-danger/10 text-danger text-sm">
+                            {error}
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <Input
                             id="fullName"
